@@ -23,6 +23,6 @@ workflows:
       - |
         # build Android
         cd android
-        ./gradlew assembleDebug
+        ./gradlew assembleRelease
     artifacts:
       - android/app/build/outputs/**/*.apk

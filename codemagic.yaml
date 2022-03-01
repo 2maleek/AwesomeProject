@@ -3,16 +3,16 @@ workflows:
     name: React Native App
     environment:
       vars:
-        XCODE_WORKSPACE: "{{ ADD WORKSPACE NAME HERE }}"
-        XCODE_SCHEME: "{{ ADD SCHEME NAME HERE }}"
+        XCODE_WORKSPACE: '{{ ADD WORKSPACE NAME HERE }}'
+        XCODE_SCHEME: '{{ ADD SCHEME NAME HERE }}'
       xcode: 12.4
-      node: "latest"
+      node: 'latest'
     triggering:
       events:
         - push
         - tag
         - pull_request
-      
+
       branch_patterns:
         - pattern: main
           include: true
@@ -21,10 +21,8 @@ workflows:
       - npm install
       - echo "sdk.dir=$HOME/programs/android-sdk-macosx" > "$FCI_BUILD_DIR/android/local.properties"
       - |
-          chmod -R 777 $FCI_BUILD_DIR
-          echo $CM_KEYSTORE | base64 --decode > $FCI_BUILD_DIR/keystore.jks
-          # build Android
-          cd android
-          ./gradlew assembleDebug
+        # build Android
+        cd android
+        ./gradlew assembleDebug
     artifacts:
       - android/app/build/outputs/**/*.apk

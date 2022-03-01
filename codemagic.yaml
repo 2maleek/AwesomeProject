@@ -10,7 +10,7 @@ workflows:
     triggering:
       events:
         - push
-        
+
       branch_patterns:
         - pattern: main
           include: true
@@ -23,4 +23,5 @@ workflows:
         cd android
         ./gradlew assembleRelease
     artifacts:
+      - android/app/build/outputs/**/*.aab
       - android/app/build/outputs/**/*.apk

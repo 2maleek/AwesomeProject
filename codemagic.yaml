@@ -7,11 +7,11 @@ workflows:
       groups:
         - keystore_credentials
       # Add the above mentioned group environment variables in Codemagic UI (either in Application/Team variables)
-          'com.awesomeproject'
-          'keystore.keystore'
-          'android'
-          'yourpassword'
-          'androidkey'
+          com.awesomeproject
+          keystore.keystore
+          android
+          yourpassword
+          androidkey
       vars:
         PACKAGE_NAME: 'com.awesomeproject' # <-- Put your package name here e.g. com.domain.myapp
         CM_KEYSTORE: 'keystore.keystore'

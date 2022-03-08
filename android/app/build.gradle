@@ -122,6 +122,9 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  * and the benefits of using Hermes will therefore be sharply reduced.
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
+def keystorePropertiesFile= rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -153,13 +156,19 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
-        release {
-            if (System.getenv()['CI']) { // CI=true is exported by Codemagic
-                storeFile file(System.getenv()['FCI_BUILD_DIR'] + '/keystore.jks')
-                storePassword System.getenv()['FCI_KEYSTORE_PASSWORD']
-                keyAlias System.getenv()['FCI_KEY_ALIAS']
-                keyPassword System.getenv()['FCI_KEY_PASSWORD']
-            }
+        // release {
+        //     if (System.getenv()['CI']) { // CI=true is exported by Codemagic
+        //         storeFile file(System.getenv()['FCI_BUILD_DIR'] + '/keystore.jks')
+        //         storePassword System.getenv()['FCI_KEYSTORE_PASSWORD']
+        //         keyAlias System.getenv()['FCI_KEY_ALIAS']
+        //         keyPassword System.getenv()['FCI_KEY_PASSWORD']
+        //     }
+        // }
+        config {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
         }
     }
     buildTypes {
@@ -169,7 +178,8 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.config
+            // signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
